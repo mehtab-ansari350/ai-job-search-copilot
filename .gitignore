@@ -1,6 +1,20 @@
+# Virtual Environment
 venv/
+
+# Python
 __pycache__/
 *.pyc
+
+# Environment Variables
 .env
+
+# Uploaded Resumes
 data/resumes/*
 !data/resumes/.gitkeep
+
+# IDE
+.vscode/
+
+# OS Files
+.DS_Store
+Thumbs.db
