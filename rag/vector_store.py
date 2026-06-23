@@ -1,17 +1,46 @@
 """
-ChromaDB Service
+Vector Store Service
 
-Stores and retrieves embeddings.
+Handles storage and retrieval
+from ChromaDB.
 """
 
-import chromadb
+from langchain_chroma import Chroma
+from langchain_core.documents import Document
 
-client = chromadb.PersistentClient(
-    path="./database/chroma_db"
+from sentence_transformers import SentenceTransformer
+
+EMBEDDING_MODEL = SentenceTransformer(
+    "all-MiniLM-L6-v2"
 )
 
-collection = client.get_or_create_collection(
-    name="resume_collection"
+
+class LocalEmbeddingFunction:
+    """
+    Chroma embedding adapter
+    """
+
+    def embed_documents(
+        self,
+        texts
+    ):
+        return EMBEDDING_MODEL.encode(
+            texts
+        ).tolist()
+
+    def embed_query(
+        self,
+        text
+    ):
+        return EMBEDDING_MODEL.encode(
+            text
+        ).tolist()
+
+
+vector_store = Chroma(
+    collection_name="resume_collection",
+    embedding_function=LocalEmbeddingFunction(),
+    persist_directory="database/chroma_db"
 )
 
 
@@ -19,17 +48,21 @@ def store_chunks(
     chunks: list[str]
 ):
     """
-    Store text chunks in ChromaDB.
+    Store chunks in ChromaDB
     """
 
-    ids = [
-        f"chunk_{i}"
-        for i in range(len(chunks))
-    ]
+    documents = []
 
-    collection.add(
-        ids=ids,
-        documents=chunks
+    for chunk in chunks:
+
+        documents.append(
+            Document(
+                page_content=chunk
+            )
+        )
+
+    vector_store.add_documents(
+        documents
     )
 
-    return len(chunks)
+    return len(documents)
