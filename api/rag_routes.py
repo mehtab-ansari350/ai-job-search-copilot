@@ -23,10 +23,7 @@ def ask_resume_route(
     Ask questions about resume.
     """
 
-    answer = ask_resume(
-        request.question
+    result = ask_resume(
+    request.question
     )
-
-    return {
-        "answer": answer
-    }
+    return result 

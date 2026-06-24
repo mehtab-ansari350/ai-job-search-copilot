@@ -23,7 +23,7 @@ llm = ChatGroq(
 
 def ask_resume(
     question: str
-) -> str:
+) -> dict:
     """
     Ask questions about resume.
     """
@@ -56,4 +56,10 @@ Answer:
         prompt
     )
 
-    return response.content
+    return {
+        "answer": response.content,
+        "sources": [
+            doc.page_content
+            for doc in retrieved_docs
+        ]
+    }
