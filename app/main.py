@@ -7,12 +7,20 @@ from fastapi import FastAPI
 
 from api.resume_routes import router as resume_router
 
+from api.rag_routes import (
+    router as rag_router
+)
+
+
 app = FastAPI(
     title="AI Job Search Copilot",
     version="1.0.0"
 )
 
 app.include_router(resume_router)
+app.include_router(
+    rag_router
+)
 
 
 @app.get("/")
