@@ -9,6 +9,7 @@ from fastapi import UploadFile
 from fastapi import File
 
 from rag.resume_parser import extract_text_from_pdf
+from rag.ingestion_service import ingest_resume 
 
 router = APIRouter()
 
@@ -22,7 +23,7 @@ async def upload_resume(
     file: UploadFile = File(...)
 ):
     """
-    Upload resume and extract text
+    Upload resume and ingest into vector database.
     """
 
     file_path = os.path.join(
@@ -34,12 +35,11 @@ async def upload_resume(
         content = await file.read()
         f.write(content)
 
-    extracted_text = extract_text_from_pdf(
-        file_path
-    )
+    result = ingest_resume(file_path)
 
     return {
-        "message": "Resume uploaded successfully",
+        "message": "Resume uploaded and indexed successfully",
         "file_name": file.filename,
-        "text_preview": extracted_text[:1000]
+        "chunks_stored": result["chunks_stored"],
+        "text_length": result["text_length"]
     }

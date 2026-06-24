@@ -66,3 +66,25 @@ def store_chunks(
     )
 
     return len(documents)
+
+def search_chunks(
+        query: str,
+        k: int = 3
+):
+    """
+    Search similar chunks from ChromaDB.
+
+    Args:
+        query (str) : User query
+        k (int): Number of results 
+    
+    Returns:
+        list 
+    """
+
+    results = vector_store.similarity_search(
+        query=query,
+        k=k
+    )
+
+    return results
