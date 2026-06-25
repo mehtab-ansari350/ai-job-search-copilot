@@ -1,5 +1,3 @@
-# agents/job_match_agent.py
-
 """
 Job Match Agent
 
@@ -11,7 +9,6 @@ import re
 from langchain_groq import ChatGroq
 
 from app.config import GROQ_API_KEY
-from rag.vector_store import search_chunks
 
 
 llm = ChatGroq(
@@ -21,41 +18,41 @@ llm = ChatGroq(
 
 
 def analyze_job_match(
+    resume_data: dict,
     job_description: str
 ):
     """
-    Compare resume against job description.
+    Compare structured resume data
+    against a job description.
     """
-
-    retrieved_docs = search_chunks(
-        query="technical skills experience projects",
-        k=5
-    )
-
-    resume_context = "\n\n".join(
-        doc.page_content
-        for doc in retrieved_docs
-    )
 
     prompt = f"""
 You are a senior AI recruiting specialist.
 
-Compare the candidate resume
-with the job description.
+Candidate Resume Data:
 
-Resume:
-{resume_context}
+{json.dumps(resume_data, indent=2)}
 
 Job Description:
+
 {job_description}
 
-Return ONLY valid JSON:
+Instructions:
+
+1. Compare candidate skills against required skills.
+2. Calculate match score logically.
+3. Match score should be between 0 and 100.
+4. If candidate satisfies most requirements,
+   score should be above 70.
+5. Explain missing skills accurately.
+
+Return ONLY valid JSON.
 
 {{
-  "match_score": 0-100,
-  "strengths": [],
-  "missing_skills": [],
-  "recommendations": []
+    "match_score": 0,
+    "strengths": [],
+    "missing_skills": [],
+    "recommendations": []
 }}
 """
 
