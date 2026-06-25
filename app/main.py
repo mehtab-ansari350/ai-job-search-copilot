@@ -29,6 +29,10 @@ from api.resume_tailor_routes import (
 
 from api.cover_letter_routes import router as cover_letter_router
 
+from api.interview_routes import (
+    router as interview_router
+)
+
 app = FastAPI(
     title="AI Job Search Copilot",
     version="1.0.0"
@@ -60,6 +64,10 @@ app.include_router(
 
 app.include_router(
     cover_letter_router
+)
+
+app.include_router(
+    interview_router
 )
 
 @app.get("/")

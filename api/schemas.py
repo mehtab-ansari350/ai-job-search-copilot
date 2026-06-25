@@ -16,3 +16,6 @@ class TailorResumeRequest(BaseModel):
 
 class CoverLetterRequest(BaseModel):
     job_description: str
+
+class InterviewRequest(BaseModel):
+    job_description: str
