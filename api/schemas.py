@@ -19,3 +19,6 @@ class CoverLetterRequest(BaseModel):
 
 class InterviewRequest(BaseModel):
     job_description: str
+
+class SkillGapRequest(BaseModel):
+    job_description: str

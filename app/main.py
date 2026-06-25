@@ -33,6 +33,8 @@ from api.interview_routes import (
     router as interview_router
 )
 
+from api.skill_gap_routes import router as skill_gap_router
+
 app = FastAPI(
     title="AI Job Search Copilot",
     version="1.0.0"
@@ -68,6 +70,11 @@ app.include_router(
 
 app.include_router(
     interview_router
+)
+
+app.include_router(
+    skill_gap_router,
+    tags=["Skill Gap Analyzer"]
 )
 
 @app.get("/")
