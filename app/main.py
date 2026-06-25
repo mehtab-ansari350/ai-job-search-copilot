@@ -11,15 +11,24 @@ from api.rag_routes import (
     router as rag_router
 )
 
-
+from api.graph_routes import (
+    router as graph_router
+)
 app = FastAPI(
     title="AI Job Search Copilot",
     version="1.0.0"
 )
 
-app.include_router(resume_router)
+app.include_router(
+    resume_router
+)
+
 app.include_router(
     rag_router
+)
+
+app.include_router(
+    graph_router
 )
 
 
