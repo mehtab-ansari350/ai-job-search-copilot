@@ -14,6 +14,21 @@ from api.rag_routes import (
 from api.graph_routes import (
     router as graph_router
 )
+
+from api.job_search_routes import (
+    router as job_router
+)
+
+from api.job_ranker_routes import (
+    router as rank_router
+)
+
+from api.resume_tailor_routes import (
+    router as tailor_router
+)
+
+from api.cover_letter_routes import router as cover_letter_router
+
 app = FastAPI(
     title="AI Job Search Copilot",
     version="1.0.0"
@@ -31,6 +46,21 @@ app.include_router(
     graph_router
 )
 
+app.include_router(
+    job_router
+)
+
+app.include_router(
+    rank_router
+)
+
+app.include_router(
+    tailor_router
+)
+
+app.include_router(
+    cover_letter_router
+)
 
 @app.get("/")
 def home():
