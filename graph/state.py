@@ -1,7 +1,3 @@
-"""
-Shared LangGraph State
-"""
-
 from typing import TypedDict
 
 
@@ -10,6 +6,12 @@ class JobSearchState(TypedDict):
 
     resume_data: dict
 
-    match_result: dict
+    jobs: list
+
+    ranked_jobs: list
+
+    skill_gap: dict
 
     career_plan: dict
+
+    match_result: dict

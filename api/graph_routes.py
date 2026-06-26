@@ -8,26 +8,16 @@ from api.schemas import (
     JobDescriptionRequest
 )
 
-from graph.job_search_graph import(
-    job_search_graph 
-)
+from graph.builder import graph
 
 router = APIRouter()
 
-@router.post(
-    "/analyze-job"
-)
-def analyze_job(
-    request: JobDescriptionRequest
-):
-    """
-    Run LangGraph workflow.
-    """
+@router.post("/analyze-job")
+def analyze_job(request: JobDescriptionRequest):
 
-    result = job_search_graph.invoke(
+    result = graph.invoke(
         {
-            "job_description":
-            request.job_description
+            "job_description": request.job_description
         }
     )
 

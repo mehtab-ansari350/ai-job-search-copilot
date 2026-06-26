@@ -2,9 +2,7 @@ from agents.resume_agent import extract_resume_data
 from agents.job_search_agent import search_jobs
 
 
-def rank_jobs():
-
-    resume = extract_resume_data()
+def rank_jobs(resume: dict, jobs: list):
 
     resume_skills = set(
         skill.lower()
