@@ -13,6 +13,8 @@ from agents.job_search_agent import search_jobs
 from agents.job_ranker_agent import rank_jobs
 from agents.skill_gap_agent import analyze_skill_gap
 from agents.career_advisor_agent import generate_career_plan
+from agents.ats_agent import analyze_ats 
+
 
 def resume_node(state: JobSearchState):
 
@@ -66,4 +68,15 @@ def career_advisor_node(state):
 
     return {
         "career_plan": career_plan
+    }
+
+def ats_node(state):
+
+    report = analyze_ats(
+        state["resume_data"],
+        state["job_description"]
+    )
+
+    return {
+        "ats_report": report
     }

@@ -38,20 +38,69 @@ def extract_resume_data():
     )
 
     prompt = f"""
-You are an expert resume analyzer.
+You are an expert ATS resume parser.
 
-Extract information from the resume.
-
-Resume:
-{context}
+Extract ALL information from the resume.
 
 Return ONLY valid JSON.
 
+Rules:
+
+- Extract ALL technical skills.
+- Extract EVERY project.
+- Extract EVERY work experience.
+- Extract EVERY education entry.
+- Extract certifications if present.
+- Extract achievements if present.
+- Extract GitHub, LinkedIn and Portfolio links if available.
+- Never leave projects empty unless there are absolutely none.
+- Never invent information.
+
+Resume:
+
+{context}
+
+Return this JSON format:
+
 {{
     "skills": [],
-    "projects": [],
-    "experience": [],
-    "education": []
+
+    "projects": [
+        {{
+            "title":"",
+            "description":"",
+            "technologies":[]
+        }}
+    ],
+
+    "experience":[
+        {{
+            "position":"",
+            "organization":"",
+            "duration":"",
+            "description":""
+        }}
+    ],
+
+    "education":[
+        {{
+            "degree":"",
+            "field":"",
+            "university":"",
+            "duration":"",
+            "cgpa":""
+        }}
+    ],
+
+    "certifications":[],
+
+    "achievements":[],
+
+    "links": {{
+        "github":"",
+        "linkedin":"",
+        "portfolio":""
+    }}
 }}
 """
 

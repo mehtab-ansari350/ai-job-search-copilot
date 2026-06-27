@@ -12,6 +12,6 @@ class JobSearchState(TypedDict):
 
     skill_gap: dict
 
-    career_plan: dict
+    ats_report: dict      
 
-    match_result: dict
+    career_plan: dict

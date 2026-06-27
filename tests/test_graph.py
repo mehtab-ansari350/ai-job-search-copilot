@@ -10,4 +10,26 @@ initial_state = {
 result = graph.invoke(initial_state)
 
 print("\nFINAL RESULT\n")
-print(result)
+print("\n==============================")
+print("ATS REPORT")
+print("==============================")
+
+print("ATS Score:", result["ats_report"]["ats_score"])
+
+print("\nMatched Keywords")
+print(result["ats_report"]["matched_keywords"])
+
+print("\nMissing Keywords")
+print(result["ats_report"]["missing_keywords"])
+
+print("\nStrengths")
+for item in result["ats_report"]["strengths"]:
+    print("-", item)
+
+print("\nWeaknesses")
+for item in result["ats_report"]["weaknesses"]:
+    print("-", item)
+
+print("\nSuggestions")
+for item in result["ats_report"]["suggestions"]:
+    print("-", item)
