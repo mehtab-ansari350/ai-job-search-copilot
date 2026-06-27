@@ -13,6 +13,8 @@ from langchain_groq import ChatGroq
 from app.config import GROQ_API_KEY
 from rag.vector_store import search_chunks
 
+from utils.skill_normalizer import normalize 
+
 
 llm = ChatGroq(
     model="llama-3.3-70b-versatile",
@@ -65,4 +67,11 @@ Return ONLY valid JSON.
         content
     ).strip()
 
-    return json.loads(content)
+    resume_data = json.loads(content)
+
+    # Normalize resume skills
+    resume_data["skills"] = normalize(
+        resume_data.get("skills", [])
+    )
+
+    return resume_data

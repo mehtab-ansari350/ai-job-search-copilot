@@ -2,8 +2,11 @@
 Job Search Agent
 """
 
-from providers.static_provider import get_jobs
+from providers.provider_factory import get_provider
 
 
 def search_jobs():
-    return get_jobs()
+
+    provider = get_provider()
+
+    return provider.get_jobs()
