@@ -1,56 +1,64 @@
-import json
-import re
+"""
+Cover Letter Generator Agent
+"""
 
-from langchain_groq import ChatGroq
+import os
+from groq import Groq
 
-from app.config import GROQ_API_KEY
-from rag.vector_store import search_chunks
-
-
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
-    api_key=GROQ_API_KEY
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY")
 )
 
+MODEL = "llama-3.3-70b-versatile"
 
-def generate_cover_letter(
-    job_description: str
-):
-    
-    docs = search_chunks(
-        query="skills projects experience",
-        k=5
-    )
 
-    resume_context = "\n\n".join(
-        doc.page_content
-        for doc in docs
-    )
+def generate_cover_letter(resume_data, job):
 
     prompt = f"""
-You are a professional recruiter.
+You are an expert HR recruiter and professional resume writer.
 
 Write a professional cover letter.
 
-Resume:
-{resume_context}
+Candidate Skills:
+{resume_data.get("skills", [])}
+
+Experience:
+{resume_data.get("experience", [])}
+
+Projects:
+{resume_data.get("projects", [])}
+
+Job Title:
+{job.get("title", "")}
+
+Company:
+{job.get("company", "")}
 
 Job Description:
-{job_description}
+{job.get("description", "")}
 
-Return ONLY JSON:
-
-{{
-  "cover_letter":"..."
-}}
+Instructions:
+- Keep it under 300 words.
+- Make it ATS-friendly.
+- Mention matching skills.
+- Explain why the candidate is a strong fit.
+- Sound confident and professional.
+- End politely.
 """
 
-    response = llm.invoke(prompt)
+    response = client.chat.completions.create(
+        model=MODEL,
+        temperature=0.4,
+        messages=[
+            {
+                "role": "system",
+                "content": "You are an expert cover letter writer."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
 
-    content = re.sub(
-        r"```json|```",
-        "",
-        response.content
-    ).strip()
-
-    return json.loads(content)
+    return response.choices[0].message.content

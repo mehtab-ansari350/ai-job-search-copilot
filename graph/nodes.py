@@ -15,6 +15,8 @@ from agents.skill_gap_agent import analyze_skill_gap
 from agents.career_advisor_agent import generate_career_plan
 from agents.ats_agent import analyze_ats 
 from agents.resume_optimizer_agent import optimize_resume
+from agents.cover_letter_agent import generate_cover_letter
+
 
 def resume_node(state: JobSearchState):
 
@@ -94,3 +96,19 @@ def resume_optimizer_node(state):
     return {
         "resume_optimization": optimized_resume
     }
+
+def cover_letter_node(state):
+
+    if len(state["ranked_jobs"]) == 0:
+        return state
+
+    best_job = state["ranked_jobs"][0]
+
+    cover_letter = generate_cover_letter(
+        state["resume_data"],
+        best_job
+    )
+
+    state["cover_letter"] = cover_letter
+
+    return state

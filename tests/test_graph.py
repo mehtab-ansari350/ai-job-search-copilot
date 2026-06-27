@@ -40,3 +40,9 @@ print("RESUME OPTIMIZER")
 print("=" * 30)
 
 print(result["resume_optimization"])
+
+print()
+print("=" * 30)
+print("COVER LETTER")
+print("=" * 30)
+print(result["cover_letter"])

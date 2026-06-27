@@ -17,3 +17,5 @@ class JobSearchState(TypedDict):
     career_plan: dict
 
     resume_optimization: str
+
+    cover_letter: str 
