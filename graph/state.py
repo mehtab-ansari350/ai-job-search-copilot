@@ -15,3 +15,5 @@ class JobSearchState(TypedDict):
     ats_report: dict      
 
     career_plan: dict
+
+    resume_optimization: str

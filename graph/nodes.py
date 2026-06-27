@@ -14,7 +14,7 @@ from agents.job_ranker_agent import rank_jobs
 from agents.skill_gap_agent import analyze_skill_gap
 from agents.career_advisor_agent import generate_career_plan
 from agents.ats_agent import analyze_ats 
-
+from agents.resume_optimizer_agent import optimize_resume
 
 def resume_node(state: JobSearchState):
 
@@ -79,4 +79,18 @@ def ats_node(state):
 
     return {
         "ats_report": report
+    }
+
+def resume_optimizer_node(state):
+    """
+    Resume Optimizer Node
+    """
+
+    optimized_resume = optimize_resume(
+        state["resume_data"],
+        state["job_description"]
+    )
+
+    return {
+        "resume_optimization": optimized_resume
     }

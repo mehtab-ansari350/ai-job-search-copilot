@@ -13,6 +13,7 @@ from graph.nodes import (
     skill_gap_node,
     ats_node,
     career_advisor_node,
+    resume_optimizer_node,
 )
 
 workflow = StateGraph(JobSearchState)
@@ -23,6 +24,7 @@ workflow.add_node("job_ranker", job_ranker_node)
 workflow.add_node("skill_gap", skill_gap_node)
 workflow.add_node("ats",ats_node)
 workflow.add_node("career_advisor", career_advisor_node)
+workflow.add_node("resume_optimizer",resume_optimizer_node)
 
 workflow.set_entry_point("resume")
 
@@ -42,6 +44,11 @@ workflow.add_edge(
 
 workflow.add_edge(
     "career_advisor",
+    "resume_optimizer"
+)
+
+workflow.add_edge(
+    "resume_optimizer",
     END
 )
 

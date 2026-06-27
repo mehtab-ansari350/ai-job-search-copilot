@@ -33,3 +33,10 @@ for item in result["ats_report"]["weaknesses"]:
 print("\nSuggestions")
 for item in result["ats_report"]["suggestions"]:
     print("-", item)
+
+print("\n")
+print("=" * 30)
+print("RESUME OPTIMIZER")
+print("=" * 30)
+
+print(result["resume_optimization"])
