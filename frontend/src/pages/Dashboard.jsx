@@ -1,5 +1,8 @@
 import { useState } from "react";
 import api from "../services/api";
+import DashboardSummary from "../components/DashboardSummary";
+import JobList from "../components/JobList";
+
 
 function Dashboard() {
     const [jobDescription, setJobDescription] = useState("");
@@ -70,14 +73,13 @@ function Dashboard() {
                   Analyzing Resume...
               </p>
           )}
-
-          {/* Temporary JSON */}
+          
+          {result && <DashboardSummary result={result} />}
 
           {result && (
-              <pre className="mt-8 bg-gray-900 text-green-400 p-5 rounded-lg overflow-auto">
-                  {JSON.stringify(result, null, 2)}
-              </pre>
-          )}
+              <JobList jobs={result.ranked_jobs} />
+          )}          
+          
         </div>
 
       </div>
