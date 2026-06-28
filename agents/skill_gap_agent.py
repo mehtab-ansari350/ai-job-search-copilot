@@ -59,4 +59,10 @@ Return ONLY valid JSON:
         content
     ).strip()
 
+    content = re.sub(r"#.*", "", content)
+
+    print("\n================ SKILL GAP OUTPUT ================\n")
+    print(content)
+    print("\n==================================================\n")
+
     return json.loads(content)

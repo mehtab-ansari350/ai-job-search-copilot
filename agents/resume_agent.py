@@ -104,11 +104,13 @@ Return this JSON format:
 }}
 """
 
-    response = llm.invoke(
-        prompt
-    )
+    response = llm.invoke(prompt)
 
     content = response.content
+
+    print("\n================ LLM OUTPUT ================\n")
+    print(content)
+    print("\n============================================\n")
 
     content = re.sub(
         r"```json|```",
@@ -116,7 +118,14 @@ Return this JSON format:
         content
     ).strip()
 
-    resume_data = json.loads(content)
+    # Remove Python-style comments from LLM output
+    content = re.sub(r"#.*", "", content)
+
+    try:
+        resume_data = json.loads(content)
+    except Exception:
+        print(content)
+        raise Exception("Invalid JSON return by LLM")
 
     # Normalize resume skills
     resume_data["skills"] = normalize(

@@ -4,6 +4,7 @@ AI Job Search Copilot
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from api.resume_routes import router as resume_router
 
@@ -40,41 +41,70 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(
-    resume_router
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(
-    rag_router
+    graph_router,
+    prefix="/api",
+    tags=["LangGraph"]
 )
 
 app.include_router(
-    graph_router
+    resume_router,
+    prefix="/api",
+    tags=["Resume"]
 )
 
 app.include_router(
-    job_router
+    rag_router,
+    prefix="/api",
+    tags=["RAG"]
 )
 
 app.include_router(
-    rank_router
+    job_router,
+    prefix="/api",
+    tags=["Jobs"]
 )
 
 app.include_router(
-    tailor_router
+    rank_router,
+    prefix="/api",
+    tags=["Ranking"]
 )
 
 app.include_router(
-    cover_letter_router
+    tailor_router,
+    prefix="/api",
+    tags=["Resume Tailor"]
 )
 
 app.include_router(
-    interview_router
+    cover_letter_router,
+    prefix="/api",
+    tags=["Cover Letter"]
+)
+
+app.include_router(
+    interview_router,
+    prefix="/api",
+    tags=["Interview"]
 )
 
 app.include_router(
     skill_gap_router,
-    tags=["Skill Gap Analyzer"]
+    prefix="/api",
+    tags=["Skill Gap"]
 )
 
 @app.get("/")
