@@ -26,3 +26,6 @@ class SkillGapRequest(BaseModel):
 class ResumeOptimizerRequest(BaseModel):
     resume_data: dict
     job_description: str
+
+class CareerAdvisorRequest(BaseModel):
+    missing_skills: list[str]

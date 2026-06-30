@@ -113,19 +113,35 @@ Return this JSON format:
     print("\n============================================\n")
 
     content = re.sub(
-        r"```json|```",
-        "",
-        content
-    ).strip()
+    r"```json|```",
+    "",
+    content
+    )
 
-    # Remove Python-style comments from LLM output
+    # Remove comments
     content = re.sub(r"#.*", "", content)
+
+    # Find the first JSON object
+    start = content.find("{")
+
+    if start != -1:
+        content = content[start:]
+
+    # Remove everything after the last }
+    end = content.rfind("}")
+
+    if end != -1:
+        content = content[:end + 1]
+
+    content = content.strip()
 
     try:
         resume_data = json.loads(content)
-    except Exception:
+    except Exception as e:
+        print("\n========= INVALID JSON =========")
         print(content)
-        raise Exception("Invalid JSON return by LLM")
+        print("================================")
+        raise Exception(f"Invalid JSON returned by LLM: {e}")
 
     # Normalize resume skills
     resume_data["skills"] = normalize(

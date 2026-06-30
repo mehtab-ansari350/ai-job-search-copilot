@@ -1,10 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import traceback
 
 from api.schemas import JobDescriptionRequest
 from graph.builder import graph
 
 router = APIRouter()
+
 
 @router.post("/analyze-job")
 def analyze_job(request: JobDescriptionRequest):
@@ -21,6 +22,7 @@ def analyze_job(request: JobDescriptionRequest):
         traceback.print_exc()
         print("=================================\n")
 
-        return {
-            "error": str(e)
-        }
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )

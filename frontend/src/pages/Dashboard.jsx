@@ -5,7 +5,10 @@ import JobList from "../components/JobList";
 import ATSReportCard from "../components/ATSReportCard";
 import ResumeOptimizer from "../components/ResumeOptimizer";
 import CoverLetterGenerator from "../components/CoverLetterGenerator";
-import ReactMarkdown from "react-markdown";
+import CareerAdvisor from "../components/CareerAdvisor";
+import InterviewPreparation from "../components/InterviewPreparation";
+
+
 
 function Dashboard() {
     const [jobDescription, setJobDescription] = useState("");
@@ -27,20 +30,25 @@ function Dashboard() {
                 job_description: jobDescription,
             });
 
-            console.log(" API Response:", res.data);
+            console.log(JSON.stringify(res.data, null, 2));
 
             setResult(res.data);
 
         } catch (error) {
 
-            console.log(" API Error:", error);
+            console.error(error);
+
+            alert(
+                error.response?.data?.detail ||
+                "Something went wrong."
+            );
 
         } finally {
 
             setLoading(false);
 
         }
-
+    
     };
 
    
@@ -104,14 +112,22 @@ function Dashboard() {
           )} 
 
           {result && (
-              <>  <ReactMarkdown>
-                    <ResumeOptimizer jobDescription={jobDescription} />
-                  </ReactMarkdown>
-                  
+              <>  
+                  <ResumeOptimizer jobDescription={jobDescription} />
 
                   <CoverLetterGenerator jobDescription={jobDescription} />
+
+                  {result?.skill_gap?.missing_skills && (
+                      <CareerAdvisor
+                          missingSkills={result.skill_gap.missing_skills}
+                      />
+                  )}
+
+                  <InterviewPreparation jobDescription={jobDescription} /> 
               </>
           )}
+
+          
           
         </div>
 

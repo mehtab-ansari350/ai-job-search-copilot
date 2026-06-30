@@ -5,7 +5,7 @@ AI Job Search Copilot
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from api.career_advisor_routes import router as career_router
 from api.resume_routes import router as resume_router
 
 from api.rag_routes import (
@@ -105,6 +105,12 @@ app.include_router(
     skill_gap_router,
     prefix="/api",
     tags=["Skill Gap"]
+)
+
+app.include_router(
+    career_router,
+    prefix="/api",
+    tags=["Career Advisor"]
 )
 
 @app.get("/")
