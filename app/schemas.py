@@ -17,3 +17,7 @@ class JobMatchResponse(BaseModel):
     strengths: List[str]
     missing_skills: List[str]
     recommendations: List[str]
+
+class ResumeOptimizerRequest(BaseModel):
+    resume_data: dict
+    job_description: str

@@ -2,7 +2,10 @@ import { useState } from "react";
 import api from "../services/api";
 import DashboardSummary from "../components/DashboardSummary";
 import JobList from "../components/JobList";
-
+import ATSReportCard from "../components/ATSReportCard";
+import ResumeOptimizer from "../components/ResumeOptimizer";
+import CoverLetterGenerator from "../components/CoverLetterGenerator";
+import ReactMarkdown from "react-markdown";
 
 function Dashboard() {
     const [jobDescription, setJobDescription] = useState("");
@@ -10,21 +13,35 @@ function Dashboard() {
     const [loading, setLoading] = useState(false);
 
     const analyzeResume = async () => {
-    try {
-        setLoading(true);
 
-        const res = await api.post("/analyze-job", {
-            job_description: jobDescription,
-        });
+        console.log("Analyze button clicked");
+        console.log("Job Description:", jobDescription);
 
-        setResult(res.data);
+        try {
 
-    } catch (error) {
-        console.log(error);
-    } finally {
-        setLoading(false);
-    }
-};
+            setLoading(true);
+
+            console.log("Sending request...");
+
+            const res = await api.post("/analyze-job", {
+                job_description: jobDescription,
+            });
+
+            console.log(" API Response:", res.data);
+
+            setResult(res.data);
+
+        } catch (error) {
+
+            console.log(" API Error:", error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
 
    
 
@@ -78,7 +95,23 @@ function Dashboard() {
 
           {result && (
               <JobList jobs={result.ranked_jobs} />
-          )}          
+          )} 
+
+          {result && (
+              <ATSReportCard
+                  report={result.ats_report}
+              />
+          )} 
+
+          {result && (
+              <>  <ReactMarkdown>
+                    <ResumeOptimizer jobDescription={jobDescription} />
+                  </ReactMarkdown>
+                  
+
+                  <CoverLetterGenerator jobDescription={jobDescription} />
+              </>
+          )}
           
         </div>
 

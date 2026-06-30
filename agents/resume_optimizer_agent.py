@@ -2,49 +2,97 @@
 Resume Optimizer Agent
 """
 
-import os
 from groq import Groq
 
+from app.config import GROQ_API_KEY
+
 client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
+    api_key=GROQ_API_KEY
 )
 
 
 def optimize_resume(resume_data, job_description):
 
     prompt = f"""
-You are a Senior Technical Recruiter and Resume Expert.
+You are a Senior FAANG Recruiter, ATS Expert, and Professional Resume Writer.
+
+Your ONLY job is to improve the candidate's existing resume.
 
 Candidate Resume
 
 Skills:
-{resume_data.get("skills", [])}
+{resume_data.get("skills", "")}
 
 Experience:
-{resume_data.get("experience", [])}
+{resume_data.get("experience", "")}
 
 Projects:
-{resume_data.get("projects", [])}
+{resume_data.get("projects", "")}
 
 Target Job Description
 
 {job_description}
 
-Your task is to improve this resume.
+STRICT RULES
 
-Return in markdown.
+1. NEVER invent any company.
+2. NEVER invent any project.
+3. NEVER invent any certification.
+4. NEVER invent any experience.
+5. NEVER invent any achievement.
+6. NEVER invent any metric.
+7. NEVER invent any technology.
+8. NEVER add AWS, Kubernetes, MongoDB, etc. unless they already exist in the resume.
+9. If something is missing, recommend it instead of pretending the candidate has it.
+10. Only rewrite existing content professionally.
 
-## Professional Summary
+Your goal is to:
 
-## Improved Skills
+• Improve grammar
+• Improve ATS score
+• Improve readability
+• Improve action verbs
+• Improve bullet points
+• Add ATS keywords naturally
+• Keep everything truthful
 
-## Improved Experience
+Return ONLY these sections.
 
-## Improved Projects
+# Professional Summary
 
-## ATS Keywords to Add
+# Improved Skills
 
-## Final Suggestions
+# Improved Experience
+
+# Improved Projects
+
+# ATS Keywords Found
+
+# ATS Keywords Missing
+
+# Suggested Improvements
+
+For "ATS Keywords Missing", recommend skills from the job description that are NOT in the resume.
+
+Never claim the candidate has those skills.
+
+Instead write:
+
+"Consider learning Docker."
+
+"Consider learning Kubernetes."
+
+"Consider learning AWS."
+
+instead of adding them to the resume.
+
+Output should be professional.
+
+No explanations.
+
+No markdown code blocks.
+
+No fake information.
 """
 
     response = client.chat.completions.create(

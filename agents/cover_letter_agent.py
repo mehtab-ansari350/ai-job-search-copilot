@@ -5,6 +5,7 @@ Cover Letter Generator Agent
 import os
 from groq import Groq
 
+
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
@@ -14,19 +15,32 @@ MODEL = "llama-3.3-70b-versatile"
 
 def generate_cover_letter(resume_data, job):
 
+
+    skills = ", ".join(resume_data.get("skills", []))
+
+    experience = "\n".join(
+        f"- {exp.get('position','')} at {exp.get('organization','')} ({exp.get('duration','')})\n  {exp.get('description','')}"
+        for exp in resume_data.get("experience", [])
+    )
+
+    projects = "\n".join(
+        f"- {project.get('title','')}\n  {project.get('description','')}"
+        for project in resume_data.get("projects", [])
+    )
+
     prompt = f"""
 You are an expert HR recruiter and professional resume writer.
 
 Write a professional cover letter.
 
 Candidate Skills:
-{resume_data.get("skills", [])}
+{skills}
 
 Experience:
-{resume_data.get("experience", [])}
+{experience}
 
 Projects:
-{resume_data.get("projects", [])}
+{projects}
 
 Job Title:
 {job.get("title", "")}

@@ -1,24 +1,26 @@
-"""
-LangGraph API Routes
-"""
+from fastapi import APIRouter
+import traceback
 
-from fastapi import APIRouter 
-
-from api.schemas import (
-    JobDescriptionRequest
-)
-
+from api.schemas import JobDescriptionRequest
 from graph.builder import graph
 
 router = APIRouter()
 
 @router.post("/analyze-job")
 def analyze_job(request: JobDescriptionRequest):
+    try:
+        result = graph.invoke(
+            {
+                "job_description": request.job_description
+            }
+        )
+        return result
 
-    result = graph.invoke(
-        {
-            "job_description": request.job_description
+    except Exception as e:
+        print("\n========== GRAPH ERROR ==========")
+        traceback.print_exc()
+        print("=================================\n")
+
+        return {
+            "error": str(e)
         }
-    )
-
-    return result

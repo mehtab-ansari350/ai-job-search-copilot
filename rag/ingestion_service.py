@@ -11,7 +11,7 @@ Responsible for:
 from rag.resume_parser import extract_text_from_pdf
 from rag.text_chunker import chunk_text 
 from rag.vector_store import store_chunks
-
+from rag.resume_storage import save_resume
 
 def ingest_resume(pdf_path: str) -> dict:
     """
@@ -26,6 +26,9 @@ def ingest_resume(pdf_path: str) -> dict:
 
     #Extract text 
     text = extract_text_from_pdf(pdf_path)
+
+    # Save latest uploaded resume
+    save_resume(text)
 
     #Chunk Text 
     chunks = chunk_text(text)

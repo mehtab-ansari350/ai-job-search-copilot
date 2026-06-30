@@ -22,3 +22,7 @@ class InterviewRequest(BaseModel):
 
 class SkillGapRequest(BaseModel):
     job_description: str
+
+class ResumeOptimizerRequest(BaseModel):
+    resume_data: dict
+    job_description: str
